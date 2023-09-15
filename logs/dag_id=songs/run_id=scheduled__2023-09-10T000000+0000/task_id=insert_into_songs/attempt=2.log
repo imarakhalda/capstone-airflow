@@ -1,0 +1,25 @@
+[2023-09-15T11:43:16.933+0000] {taskinstance.py:1125} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: songs.insert_into_songs scheduled__2023-09-10T00:00:00+00:00 [queued]>
+[2023-09-15T11:43:18.241+0000] {taskinstance.py:1125} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: songs.insert_into_songs scheduled__2023-09-10T00:00:00+00:00 [queued]>
+[2023-09-15T11:43:18.242+0000] {taskinstance.py:1331} INFO - Starting attempt 2 of 2
+[2023-09-15T11:43:18.312+0000] {taskinstance.py:1350} INFO - Executing <Task(GenericTransfer): insert_into_songs> on 2023-09-10 00:00:00+00:00
+[2023-09-15T11:43:18.332+0000] {standard_task_runner.py:57} INFO - Started process 76 to run task
+[2023-09-15T11:43:18.352+0000] {standard_task_runner.py:84} INFO - Running: ['***', 'tasks', 'run', 'songs', 'insert_into_songs', 'scheduled__2023-09-10T00:00:00+00:00', '--job-id', '28', '--raw', '--subdir', 'DAGS_FOLDER/songs.py', '--cfg-path', '/tmp/tmp1vygf02a']
+[2023-09-15T11:43:18.369+0000] {standard_task_runner.py:85} INFO - Job 28: Subtask insert_into_songs
+[2023-09-15T11:43:18.643+0000] {task_command.py:410} INFO - Running <TaskInstance: songs.insert_into_songs scheduled__2023-09-10T00:00:00+00:00 [running]> on host ecb76d2810ac
+[2023-09-15T11:43:19.168+0000] {taskinstance.py:1570} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='Imara Acacia' AIRFLOW_CTX_DAG_ID='songs' AIRFLOW_CTX_TASK_ID='insert_into_songs' AIRFLOW_CTX_EXECUTION_DATE='2023-09-10T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='2' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2023-09-10T00:00:00+00:00'
+[2023-09-15T11:43:19.266+0000] {base.py:73} INFO - Using connection ID 'postgres' for task execution.
+[2023-09-15T11:43:20.433+0000] {taskinstance.py:1847} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/operators/generic_transfer.py", line 75, in execute
+    destination_hook = BaseHook.get_hook(self.destination_conn_id)
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/hooks/base.py", line 84, in get_hook
+    connection = cls.get_connection(conn_id)
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/hooks/base.py", line 72, in get_connection
+    conn = Connection.get_connection_from_secrets(conn_id)
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/models/connection.py", line 434, in get_connection_from_secrets
+    raise AirflowNotFoundException(f"The conn_id `{conn_id}` isn't defined")
+airflow.exceptions.AirflowNotFoundException: The conn_id `datawarehouse` isn't defined
+[2023-09-15T11:43:20.453+0000] {taskinstance.py:1373} INFO - Marking task as FAILED. dag_id=songs, task_id=insert_into_songs, execution_date=20230910T000000, start_date=20230915T114316, end_date=20230915T114320
+[2023-09-15T11:43:20.500+0000] {standard_task_runner.py:109} ERROR - Failed to execute job 28 for task insert_into_songs (The conn_id `datawarehouse` isn't defined; 76)
+[2023-09-15T11:43:20.536+0000] {local_task_job_runner.py:232} INFO - Task exited with return code 1
+[2023-09-15T11:43:20.624+0000] {taskinstance.py:2674} INFO - 0 downstream tasks scheduled from follow-on schedule check

@@ -1,0 +1,74 @@
+[2023-09-15T11:48:20.848+0000] {taskinstance.py:1125} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: artis_revenue.insert_into_artist_revenue manual__2023-09-15T11:48:16.861663+00:00 [queued]>
+[2023-09-15T11:48:21.580+0000] {taskinstance.py:1125} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: artis_revenue.insert_into_artist_revenue manual__2023-09-15T11:48:16.861663+00:00 [queued]>
+[2023-09-15T11:48:21.581+0000] {taskinstance.py:1331} INFO - Starting attempt 1 of 2
+[2023-09-15T11:48:21.610+0000] {taskinstance.py:1350} INFO - Executing <Task(GenericTransfer): insert_into_artist_revenue> on 2023-09-15 11:48:16.861663+00:00
+[2023-09-15T11:48:21.623+0000] {standard_task_runner.py:57} INFO - Started process 176 to run task
+[2023-09-15T11:48:21.629+0000] {standard_task_runner.py:84} INFO - Running: ['***', 'tasks', 'run', 'artis_revenue', 'insert_into_artist_revenue', 'manual__2023-09-15T11:48:16.861663+00:00', '--job-id', '35', '--raw', '--subdir', 'DAGS_FOLDER/artist_revenue.py', '--cfg-path', '/tmp/tmppl4ogmb9']
+[2023-09-15T11:48:21.634+0000] {standard_task_runner.py:85} INFO - Job 35: Subtask insert_into_artist_revenue
+[2023-09-15T11:48:21.762+0000] {task_command.py:410} INFO - Running <TaskInstance: artis_revenue.insert_into_artist_revenue manual__2023-09-15T11:48:16.861663+00:00 [running]> on host ecb76d2810ac
+[2023-09-15T11:48:21.972+0000] {taskinstance.py:1570} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='Imara Acacia' AIRFLOW_CTX_DAG_ID='artis_revenue' AIRFLOW_CTX_TASK_ID='insert_into_artist_revenue' AIRFLOW_CTX_EXECUTION_DATE='2023-09-15T11:48:16.861663+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2023-09-15T11:48:16.861663+00:00'
+[2023-09-15T11:48:22.000+0000] {base.py:73} INFO - Using connection ID 'postgres' for task execution.
+[2023-09-15T11:48:22.265+0000] {base.py:73} INFO - Using connection ID 'dwh' for task execution.
+[2023-09-15T11:48:22.386+0000] {generic_transfer.py:77} INFO - Extracting data from postgres
+[2023-09-15T11:48:22.387+0000] {generic_transfer.py:78} INFO - Executing: 
+ 
+SELECT a."ArtistId", 
+       a."Name", 
+       b."Title", 
+       c."Name", 
+       (d."Quantity" * d."UnitPrice"),
+       d."InvoiceLineId",
+       e."InvoiceId",
+       e."InvoiceDate"
+FROM "Artist" a
+JOIN "Album" b
+ON a."ArtistId" = b."ArtistId"
+JOIN "Track" c
+ON b."AlbumId" = c."AlbumId"
+JOIN "InvoiceLine" d
+ON c."TrackId" = d."TrackId"
+JOIN "Invoice" e
+ON d."InvoiceId" = e."InvoiceId"
+[2023-09-15T11:48:22.397+0000] {base.py:73} INFO - Using connection ID 'postgres' for task execution.
+[2023-09-15T11:48:22.402+0000] {sql.py:375} INFO - Running statement: 
+SELECT a."ArtistId", 
+       a."Name", 
+       b."Title", 
+       c."Name", 
+       (d."Quantity" * d."UnitPrice"),
+       d."InvoiceLineId",
+       e."InvoiceId",
+       e."InvoiceDate"
+FROM "Artist" a
+JOIN "Album" b
+ON a."ArtistId" = b."ArtistId"
+JOIN "Track" c
+ON b."AlbumId" = c."AlbumId"
+JOIN "InvoiceLine" d
+ON c."TrackId" = d."TrackId"
+JOIN "Invoice" e
+ON d."InvoiceId" = e."InvoiceId", parameters: None
+[2023-09-15T11:48:22.457+0000] {sql.py:384} INFO - Rows affected: 2240
+[2023-09-15T11:48:22.463+0000] {generic_transfer.py:95} INFO - Running preoperator
+[2023-09-15T11:48:22.464+0000] {generic_transfer.py:96} INFO - ['DROP TABLE IF EXISTS artist_revenue', '\n        CREATE TABLE artist_revenue (\n        "ArtistId" INT NOT NULL,\n        "ArtistName" VARCHAR(120),\n        "AlbumTitle" VARCHAR(160) NOT NULL,\n        "TrackName" VARCHAR(200) NOT NULL,\n        "TotalPrice" NUMERIC(10,2) NOT NULL,\n        "InvoiceLineId" INT NOT NULL,\n        "InvoiceId" INT NOT NULL,\n        "InvoiceDate" TIMESTAMP NOT NULL)\n        ']
+[2023-09-15T11:48:22.477+0000] {base.py:73} INFO - Using connection ID 'dwh' for task execution.
+[2023-09-15T11:48:22.482+0000] {sql.py:375} INFO - Running statement: DROP TABLE IF EXISTS artist_revenue, parameters: None
+[2023-09-15T11:48:22.501+0000] {sql.py:375} INFO - Running statement: 
+        CREATE TABLE artist_revenue (
+        "ArtistId" INT NOT NULL,
+        "ArtistName" VARCHAR(120),
+        "AlbumTitle" VARCHAR(160) NOT NULL,
+        "TrackName" VARCHAR(200) NOT NULL,
+        "TotalPrice" NUMERIC(10,2) NOT NULL,
+        "InvoiceLineId" INT NOT NULL,
+        "InvoiceId" INT NOT NULL,
+        "InvoiceDate" TIMESTAMP NOT NULL)
+        , parameters: None
+[2023-09-15T11:48:22.535+0000] {generic_transfer.py:105} INFO - Inserting rows into dwh
+[2023-09-15T11:48:22.544+0000] {base.py:73} INFO - Using connection ID 'dwh' for task execution.
+[2023-09-15T11:48:23.057+0000] {sql.py:470} INFO - Loaded 1000 rows into artist_revenue so far
+[2023-09-15T11:48:23.400+0000] {sql.py:470} INFO - Loaded 2000 rows into artist_revenue so far
+[2023-09-15T11:48:23.468+0000] {sql.py:473} INFO - Done loading. Loaded a total of 2240 rows into artist_revenue
+[2023-09-15T11:48:23.481+0000] {taskinstance.py:1373} INFO - Marking task as SUCCESS. dag_id=artis_revenue, task_id=insert_into_artist_revenue, execution_date=20230915T114816, start_date=20230915T114820, end_date=20230915T114823
+[2023-09-15T11:48:23.532+0000] {local_task_job_runner.py:232} INFO - Task exited with return code 0
+[2023-09-15T11:48:23.566+0000] {taskinstance.py:2674} INFO - 0 downstream tasks scheduled from follow-on schedule check
